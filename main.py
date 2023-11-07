@@ -40,13 +40,11 @@ graphs = {"простой": nx.generators.random_geometric_graph(v, v - 2), "п�
 G = graphs[properties_by_id[_type]]
 if directed:
     G = nx.to_directed(G)
-print(G.nodes)
-print(G.edges)
-plt.suptitle(f"{properties_by_id[_type].title()} граф c {len(G.nodes)} вершинами и {len(G.edges)} рёбрами:", fontsize=8)
+plt.suptitle(f"{properties_by_id[_type].title()} {'граф ' if _type < 5 else ''}c {len(G.nodes)} вершинами и {len(G.edges)} рёбрами:", fontsize=8)
 if _type == 3 or _type == 4:
     color_map = ['pink' if node < len(G.nodes) / 2 else 'gray' for node in G]
-    nx.draw(G, node_color=color_map, with_labels=True)
+    nx.draw(G, with_labels=True, color_map=color_map)
 else:
-    nx.draw(G, with_labels=True)
+    nx.draw(G, with_labels=False)
 plt.show()
 print("-----------------------------------------------Генератор графов-----------------------------------------------")
