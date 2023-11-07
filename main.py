@@ -1,3 +1,5 @@
+import random
+
 import networkx as nx
 import matplotlib.pyplot as plt
 from random import randint
@@ -31,22 +33,20 @@ if directed.isdigit():
 else:
     directed = randint(0, 1)
 graphs = {"простой": nx.generators.random_geometric_graph(v, v - 2), "полный": nx.complete_graph(v),
-          "двудольный": nx.bipartite.random_graph(v, v, randint(0, v)),
+          "двудольный": nx.bipartite.random_graph(v, v, 0.5),
           "полный двудольный": nx.bipartite.complete_bipartite_graph(v, v),
           "путь": nx.generators.balanced_tree(1, v), "цикл": nx.cycle_graph(v), "кольцо": nx.circulant_graph(v, [1]),
           "звезда": nx.generators.star_graph(v), "дерево": nx.generators.random_tree(v)}
 G = graphs[properties_by_id[_type]]
 if directed:
     G = nx.to_directed(G)
-nx.draw(G)
-plt.suptitle(f"{properties_by_id[_type].title()} граф с вершинами: {G.nodes} и рёбрами {G.edges}", fontsize=8)
+print(G.nodes)
+print(G.edges)
+plt.suptitle(f"{properties_by_id[_type].title()} граф c {len(G.nodes)} вершинами и {len(G.edges)} рёбрами:", fontsize=8)
 if _type == 3 or _type == 4:
-    d = dict()
-    for k, v in G.nodes, G.edges:
-        try:
-            d[k].append(v)
-        except KeyError:
-            d[k] = [v]
-    nx.bipartite.color = d
+    color_map = ['pink' if node < len(G.nodes) / 2 else 'gray' for node in G]
+    nx.draw(G, node_color=color_map, with_labels=True)
+else:
+    nx.draw(G, with_labels=True)
 plt.show()
 print("-----------------------------------------------Генератор графов-----------------------------------------------")
